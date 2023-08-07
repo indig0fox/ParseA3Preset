@@ -1,0 +1,73 @@
+<!-- simple file upload page -->
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>File Upload</title>
+    <style>
+      table,
+      th,
+      td {
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+
+  <body>
+    <script>
+      // upon receiving response from server, display it
+      function displayResult (response) {
+        var result = JSON.parse(response);
+        document.getElementById("steamcmd").innerHTML = result.steamcmd;
+        document.getElementById("run").innerHTML = result.run;
+
+        var resultTable = document.getElementById("result-table");
+        // resultTable is a table displaying modName and modID
+        result.results.forEach(function (mod) {
+          var row = resultTable.insertRow();
+          var modName = row.insertCell(0);
+          var modID = row.insertCell(1);
+          modName.innerHTML = mod.modName;
+          modID.innerHTML = mod.modID;
+        });
+      }
+
+      // send request to server to upload file
+      function uploadFile () {
+        var file = document.getElementById("fileToUpload").files[0];
+        var formData = new FormData();
+        formData.append("file", file);
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/upload");
+        xhr.onload = function () {
+          displayResult(xhr.responseText);
+        };
+        xhr.send(formData);
+      }
+    </script>
+    <h1>File Upload</h1>
+    <!-- show file upload button and on response, show result -->
+    <input type="file" name="fileToUpload" id="fileToUpload">
+    <button type="submit" name="submit" onclick="uploadFile()">Upload HTML Preset</button>
+    </form>
+    <br>
+    <br>
+    <h1>SteamCMD String</h1>
+    <code id="steamcmd"></code>
+    <br>
+    <h1>Run String</h1>
+    <!-- code -->
+    <code id="run"></code>
+    <h1>Results List</h1>
+    <div>
+      <table id="result-table">
+        <tr>
+          <th>Mod Name</th>
+          <th>Mod ID</th>
+        </tr>
+      </table>
+    </div>
+  </body>
+
+</html>

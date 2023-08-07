@@ -1,0 +1,19 @@
+# Build for Linux x86
+$env:GOOS="linux"
+$env:GOARCH="386"
+go build -o parser_x86 main.go
+
+# Build for Linux x64
+$env:GOOS="linux"
+$env:GOARCH="amd64"
+go build -o parser_x64 main.go
+
+# Build for Windows x86
+$env:GOOS="windows"
+$env:GOARCH="386"
+go build -o parser_x86.exe main.go
+
+# Build for Windows x64
+$env:GOOS="windows"
+$env:GOARCH="amd64"
+go build -o parser_x64.exe main.go
